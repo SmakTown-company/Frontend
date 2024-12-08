@@ -4,9 +4,12 @@
       <img class="banner-image" src="@/assets/banner.svg" alt="Banner Illustration" />
       <div class="banner-text">
         <h1 class="banner-title">смактаун.</h1>
-        <p class="banner-subtitle">всё, что нужно — к дому.</p>
+        <p class="banner-subtitle2">всё, что нужно</p>
+        <p class="banner-subtitle">— к дому.</p>
       </div>
+
     </div>
+    
   </div>
 </template>
 
@@ -17,13 +20,19 @@ export default {
 </script>
 
 <style scoped>
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 /* Универсальный сброс стилей */
 *, *::before, *::after {
   box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
   margin: 0;
-  padding: 0;
+  padding: -10px;
 }
+
+p{
+  margin-right: 50px;
+}
+
 
 /* Основной стиль баннера */
 .banner {
@@ -36,7 +45,9 @@ export default {
   min-height: 70vh; /* Минимальная высота */
   margin: 0 auto; /* Центрируем, если есть родитель с отступами */
   box-sizing: border-box;
-  margin-top: 0; /* Убираем отступ сверху */
+  margin-top: 0px; /* Убираем отступ сверху */
+  
+  
 }
 
 /* Контент внутри баннера */
@@ -48,7 +59,7 @@ export default {
   max-width: 1200px; /* Ограничиваем ширину контента */
   width: 100%;
   padding: 1rem; /* Внутренние отступы */
-  color: #f1c40f; /* Цвет текста */
+  color: #f2bd6a; /* Цвет текста */
 }
 
 /* Изображение в баннере */
@@ -60,21 +71,28 @@ export default {
 
 /* Текст в баннере */
 .banner-text {
-  margin-left: 2rem; /* Отступ от изображения */
+  margin-left: 3.5rem; /* Отступ от изображения */
   text-align: left;
+  line-height: 65px;
 }
 
 /* Стили заголовка */
 .banner-title {
   font-size: 3.5rem; /* Размер заголовка */
-  font-weight: bold;
-  margin: 0;
+  font-weight: 800;
+  margin-left: 80px;
 }
 
 /* Стили подзаголовка */
 .banner-subtitle {
-  font-size: 1.75rem;
-  font-weight: lighter;
-  margin: 0;
+  font-size: 3.5rem; /* Размер заголовка */
+  font-weight: 800;
+  margin-left: 80px;
+}
+.banner-subtitle2{
+  font-size: 3.5rem; /* Размер заголовка */
+  font-weight: 800;
+  margin:0;
+  
 }
 </style>
