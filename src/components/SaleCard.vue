@@ -1,25 +1,43 @@
 <template>
-    <div class="sale-card">
-        <div class="search-box">
-            <nav class="navbar navbar-light bg-light">
-                <form class="form-inline" @submit.prevent="openSearchModal">
-                  <input class="form-control mr-sm-2 search__engin" type="text" placeholder="поиск по сайту" v-model="searchQuery">
-                  <button type="submit" class="btn btn-outline-secondary search__button">найти</button>
-                </form>
-            </nav>
-        </div>
-
+  <div class="sale-card">
+    <!-- Поисковик -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        placeholder="Поиск по сайту" 
+        class="search-input" 
+      />
+      <button @click="performSearch" class="search-button">
+        <span class="search-icon"></span> найти
+      </button>
     </div>
-
+  </div>
 </template>
 
 <script>
-
+export default {
+  data() {
+    return {
+      searchQuery: "", // Переменная для хранения поискового запроса
+    };
+  },
+  methods: {
+    performSearch() {
+      if (this.searchQuery.trim()) {
+        console.log("Поисковый запрос:", this.searchQuery);
+        // Логика обработки поиска
+      } else {
+        console.log("Введите запрос для поиска.");
+      }
+    },
+  },
+};
 </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
-/* Остальные стили */
+
 * {
   margin: 0;
   padding: 0;
@@ -35,32 +53,63 @@ a {
   outline: none;
 }
 
-
-.sale-card{
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff; /* Фон баннера */
-    width: 100vw; /* Баннер на всю ширину экрана */
-    height: auto; /* Автоматическая высота */
-    min-height: 50vh; /* Минимальная высота */
-    margin: 0 auto; /* Центрируем, если есть родитель с отступами */
-    box-sizing: border-box;
-    margin-top: 0px; /* Убираем отступ сверху */
-    border-radius: 25px;
-    
-  
+.sale-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f2f4f0;
+  width: 100vw;
+  min-height: 50vh;
+  border-radius: 25px;
 }
 
-.search-box{
-    
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
+.search-input {
+  width: 1040px;
+  padding: 12px;
+  border-radius: 15px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.search-button {
+  padding: 12px 20px;
+  margin-left: 10px;
+  background-color: #f2bd6a; /* Цвет кнопки */
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff; /* Белый цвет текста */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Расстояние между иконкой и текстом */
+  outline: none; /* Удалить обводку при клике */
+}
+
+.search-button:hover {
+  background-color: #f39c12; /* Цвет кнопки при наведении */
+}
+
+
+
+/* Добавляем SVG-иконку для кнопки */
+.search-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background: url('@/assets/lupa.svg') no-repeat center;
+  background-size: contain;
+}
 </style>

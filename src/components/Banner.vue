@@ -13,12 +13,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Banner",
-};
-</script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 /* Универсальный сброс стилей */
@@ -29,25 +23,25 @@ export default {
   padding: -10px;
 }
 
-p{
+p {
   margin-right: 50px;
 }
-
 
 /* Основной стиль баннера */
 .banner {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #111; /* Фон баннера */
+  background-image: url('@/assets/background.svg'); /* Подключение SVG-фона */
+  background-size: 100% 100%;
+  background-repeat: no-repeat; /* Запрещаем повторение изображения */
+  background-position: center; /* Центрируем фон */
   width: 100vw; /* Баннер на всю ширину экрана */
   height: auto; /* Автоматическая высота */
   min-height: 70vh; /* Минимальная высота */
   margin: 0 auto; /* Центрируем, если есть родитель с отступами */
   box-sizing: border-box;
   margin-top: 0px; /* Убираем отступ сверху */
-  
-  
 }
 
 /* Контент внутри баннера */
@@ -89,10 +83,10 @@ p{
   font-weight: 800;
   margin-left: 80px;
 }
-.banner-subtitle2{
+
+.banner-subtitle2 {
   font-size: 3.5rem; /* Размер заголовка */
   font-weight: 800;
-  margin:0;
-  
+  margin: 0;
 }
 </style>

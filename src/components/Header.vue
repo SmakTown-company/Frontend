@@ -78,7 +78,7 @@ a {
   padding: 10px 0; /* Оставляем небольшой отступ внутри хедера */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   height: 70px; /* Фиксированная высота хедера */
-  border-bottom: solid 1px;
+  border-bottom: solid 0px;
   border-color: rgb(104, 104, 104);
 }
 
