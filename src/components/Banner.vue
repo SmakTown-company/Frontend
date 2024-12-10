@@ -32,7 +32,6 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('@/assets/background.svg'); /* Подключение SVG-фона */
   background-size: 100% 100%;
   background-repeat: no-repeat; /* Запрещаем повторение изображения */
   background-position: center; /* Центрируем фон */
@@ -50,11 +49,20 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background-image: url('@/assets/background.svg'); /* Подключение SVG-фона */
+  
   max-width: 1200px; /* Ограничиваем ширину контента */
   width: 100%;
   padding: 1rem; /* Внутренние отступы */
   color: #f2bd6a; /* Цвет текста */
+  border-radius: 25px;
+  background-color: #111111;
+  
+  
 }
+
+
+
 
 /* Изображение в баннере */
 .banner-image {
@@ -65,7 +73,7 @@ p {
 
 /* Текст в баннере */
 .banner-text {
-  margin-left: 3.5rem; /* Отступ от изображения */
+  margin-right: 2.5rem; /* Отступ от изображения */
   text-align: left;
   line-height: 65px;
 }

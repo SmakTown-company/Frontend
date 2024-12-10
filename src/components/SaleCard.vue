@@ -12,6 +12,44 @@
         <span class="search-icon"></span> найти
       </button>
     </div>
+    <div class="sale-text">
+      <h2>Товары по скидке</h2>
+    </div>
+    <div class="card-sale-list">
+      <div class="card">
+        <div class="img-for-card">
+          
+        </div>
+        <div class="name-product">
+          <h3>Куриное филе</h3>
+        </div>
+        <div class="price">
+          <h3>350₽</h3>
+        </div>
+        <div class="in-basket">
+          <h2>В КОРЗИНУ</h2>
+        </div>
+        <div class="reviews">
+
+        </div>
+        <div class="shop">
+          ООО "ПУД", Симферополь ул. Жукова, д. 12
+
+        </div>
+
+      </div>
+      
+      <div class="card">
+        penis
+      </div>
+      <div class="card">
+        penis
+      </div>
+      <div class="card">
+        penis
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -55,6 +93,7 @@ a {
 
 .sale-card {
   max-width: 1200px;
+ 
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -62,19 +101,19 @@ a {
   padding: 20px;
   background-color: #f2f4f0;
   width: 100vw;
-  min-height: 50vh;
+  min-height: 55vh;
   border-radius: 25px;
 }
 
 .search-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .search-input {
-  width: 1040px;
-  padding: 12px;
+  width: 1000px;
+  padding: 13px;
   border-radius: 15px;
   font-size: 16px;
   border: none;
@@ -111,5 +150,38 @@ a {
   display: inline-block;
   background: url('@/assets/lupa.svg') no-repeat center;
   background-size: contain;
+}
+
+.sale-text{
+  font-weight: bold;
+  margin-right: 880px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #111111;
+}
+
+.card-sale-list{
+  width: 100%;
+  display: flex;
+
+}
+
+.card{
+  background-color: white;
+  min-width: 260px;
+  min-height: 350px;
+  border-radius: 15px;
+  margin-left: 25px;
+  padding: 20px;
+  
+  
+
+  
+}
+.img-for-card{
+  
+  min-height: 200px;
+  border-radius: 15px;
+  background-color: red;
 }
 </style>
