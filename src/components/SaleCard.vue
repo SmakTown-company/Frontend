@@ -1,5 +1,17 @@
 <template>
   <div class="sale-card">
+    <!-- Поисковик -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        placeholder="Поиск по сайту" 
+        class="search-input" 
+      />
+      <button @click="performSearch" class="search-button">
+        <span class="search-icon"></span> найти
+      </button>
+    </div>
     <div class="card-sale-list">
       <div class="card" v-for="(product, index) in products" :key="index" :class="{'image-card': index === 2}">
         <!-- Для третьей карточки добавляем класс "image-card" -->
@@ -194,8 +206,9 @@ body {
   padding: 5px 20px;
   font-size: 16px;
   font-weight: bold;
+  min-height: 35px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   color: white;
   background-color: #f5b461;
@@ -235,6 +248,49 @@ body {
   font-size: 0.7rem; /* Уменьшаем размер шрифта */
   margin-top: 10px;
   line-height: 1.4; /* Увеличение межстрочного интервала для лучшей читаемости */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 1040px;
+  padding: 12px;
+  border-radius: 15px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.search-button {
+  padding: 12px 20px;
+  margin-left: 10px;
+  background-color: #f2bd6a; /* Цвет кнопки */
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff; /* Белый цвет текста */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Расстояние между иконкой и текстом */
+  outline: none; /* Удалить обводку при клике */
+}
+.search-button:hover {
+  background-color: #f39c12; /* Цвет кнопки при наведении */
+}
+/* Добавляем SVG-иконку для кнопки */
+.search-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background: url('@/assets/lupa.svg') no-repeat center;
+  background-size: contain;
 }
 
 </style>
