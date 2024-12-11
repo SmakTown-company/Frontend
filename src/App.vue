@@ -3,6 +3,7 @@
     <Header />
     <Banner />
     <SaleCard />
+    <AdvertisementBanner />
     <ProductCard />
   </div>
 </template>
@@ -13,6 +14,7 @@ import Header from "./components/Header.vue";
 import Banner from "./components/Banner.vue";
 import SaleCard from "./components/SaleCard.vue";
 import ProductCard from "./components/ProductCard.vue";
+import AdvertisementBanner from "./components/AdvertisementBanner.vue";
 
 export default {
   name: "App",
@@ -21,6 +23,7 @@ export default {
     Banner,
     SaleCard,
     ProductCard,
+    AdvertisementBanner,
   },
 };
 </script>
