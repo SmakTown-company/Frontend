@@ -12,14 +12,14 @@
         <span class="logo-text">cмактаун</span>
       </div>
       <!-- Навигация -->
-      <nav class="navigation">
-        <a href="#" class="nav-link active">Главная</a>
-        <a href="#" class="nav-link">Корзина</a>
-        <a href="#" class="nav-link">Сотрудничество</a>
-      </nav>
+      <div class="navigation">
+      <button class="main-module"> Главная</button>
+      <button class="basket-module"> Корзина</button>
+      <button class="cooperation-module"> Сотрудничество</button>
+      </div>
       <!-- Локация и профиль -->
       <div class="user-actions">
-        <a href="#" class="location">
+        <button class="location">
           <svg 
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -27,19 +27,33 @@
             <image  x="0px" y="0px" width="20px" height="30px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAeCAMAAAAFBf7qAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABBVBMVEXj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Oz///94+Cg9AAAAVXRSTlMAF1qYwdzgzKpyLSKS6fq3SWTsnQx5vRKByBBUpxPkUnfNAwbXPTiNzmBQocec0g6I47Qm+++1diObEYpwZabFOpAIQgThTowWGYsYz5XUIBqO0H3toAdLAwAAAAFiS0dEVgoN6YkAAAAHdElNRQfoDAgULyl9Bl0MAAAA8klEQVQoz3XS6VbCMBAF4AuyFamIWlQQBQFxrQu4lVWUTRQVnfd/FVuJSVqS+ytzvtNkemYAllB4JRKNxRNGEv6spkxiWUuvy5LZIDmbW1wsCiS7zWSHlrKb+5M8KbLnSWFfRXTgUlEpVDpEuaImquJII1SDIYrjk9MzUZ3jgp/tS/flK15e44afLa/feuO/vMUdp3uPHiR6FBc6LjWlC1viYbud74iqi56u+Sf0oxp6VkyE/eQL4AyUNNQOJbEY5WhZ7DEbczMo8Qlfjle/lKbSSvnufJvI24Z3IbOPwJLW+DefCOZLK8zmKgG+zZ+01MEvAqGwBNylKVAAAAAASUVORK5CYII=" />
           </svg>
           Симферополь
-        </a>
-        <a href="#" class="profile">
+        </button>
+           <!-- Модальное окно -->
+           <button class="profile" @click="openAuthModal">
           <svg 
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             width="26px" height="30px">
             <image  x="0px" y="0px" width="20px" height="30px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAfCAMAAADHso01AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABFFBMVEX////j6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Ozj6Oz///+kvwCpAAAAWnRSTlMAU6/n8tmYMwm0hNKRo1Ex8AOnV60v3E7tBwo+5AEP/MLGe1sZ3Y8p2kb50RIg/u6CHUtZPQwYZmgjRG0eE/iWNg65/ZJg7+O8yvHqVJV/n3yATC3ALrqTlGez1IrBAAAAAWJLR0QAiAUdSAAAAAd0SU1FB+gMCBQrLR4HXBEAAAD1SURBVCjPfdP7VwFBFMDxm0RlYzwqekhLFFJeFSmhokRJD+7//4e01WLu7N39/jR7PufMmb1zBkBqybXsXvF4gW11Df9bZ9mHszRGN3CR36IBSVEEVQ7JjGFFg4JwROFNoril8DblaIyyn7LYobxLeW+fcvyAcEL9sUPCuspJwinL2I4kTVtnnlnoMXdjJ1lTc3n2Rk9DBQPPzsGuYqlcqXJwcXlVm3/U9euGjDfarbFt8+53Vq1S21h37uNzfXg0D9VN9J6ezXX/xdQB8g3/9BXtejN0hPa9w9hBUcCHExfASdEtvQ0u+BQO+gXQ0L8nbANtCj9/vK8c/Y8zbAAAAABJRU5ErkJggg==" />
-          </svg> Профиль
-        </a>
+          </svg>
+          Профиль
+        </button>
       </div>
     </div>
   </header>
 </template>
+
+<script>
+export default{
+ methods: {
+    openAuthModal() {
+      this.$emit('open-modal'); // Эмитим событие для открытия модального окна
+    },
+  },
+};
+</script>
+
+
 
 <style scoped>
 /* Подключаем шрифт Montserrat */
@@ -114,6 +128,7 @@ a {
   
 }
 
+
 .nav-link {
   color: white;
   text-decoration: none;
@@ -139,7 +154,10 @@ a {
 }
 
 .location,
-.profile {
+.profile,
+.main-module,
+.basket-module,
+.cooperation-module {
   font-size: 16px;
   color: white;
   text-decoration: none;
@@ -155,7 +173,10 @@ a {
 
 
 .location:hover,
-.profile:hover {
+.profile:hover,
+.main-module:hover,
+.basket-module:hover,
+.cooperation-module:hover {
   color: #f2bd6a;
   background-color: transparent;
 }
@@ -175,4 +196,28 @@ a {
 .location:hover .location-icon {
   fill: #f2bd6a;
 }
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline; /* Сделать кнопки похожими на текст */
+}
+
+button:focus {
+  outline: none; /* Убирает фокус */
+}
+
+/* Стили для иконок в кнопках */
+button svg {
+  vertical-align: middle; /* Выравнивание иконок по центру */
+  margin-right: 8px; /* Отступ от текста */
+}
 </style>
+
+
+
+
