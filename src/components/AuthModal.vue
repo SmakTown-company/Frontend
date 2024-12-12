@@ -2,23 +2,55 @@
   <div v-if="isVisible" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
-        <h2>Авторизация</h2>
+        <h2>{{ isLogin ? 'Авторизация' : 'Регистрация' }}</h2>
         <button class="close-btn" @click="closeModal">&times;</button>
       </div>
       <div class="modal-body">
-        <form @submit.prevent="handleSubmit">
+        <!-- Форма входа -->
+        <form v-if="isLogin" @submit.prevent="handleLogin">
           <div class="form-group">
-            <label for="username">Логин</label>
-            <input type="text" id="username" v-model="username" required />
+            <label for="loginUsername">Логин</label>
+            <input type="text" id="loginUsername" v-model="loginUsername" required />
           </div>
           <div class="form-group">
-            <label for="password">Пароль</label>
-            <input type="password" id="password" v-model="password" required />
+            <label for="loginPassword">Пароль</label>
+            <input type="password" id="loginPassword" v-model="loginPassword" required />
           </div>
           <div class="form-group">
             <button type="submit">Войти</button>
           </div>
         </form>
+
+        <!-- Форма регистрации -->
+        <form v-else @submit.prevent="handleRegister">
+          <div class="form-group">
+            <label for="registerUsername">Логин</label>
+            <input type="text" id="registerUsername" v-model="registerUsername" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Пароль</label>
+            <input type="password" id="registerPassword" v-model="registerPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPasswordConfirm">Повторите пароль</label>
+            <input type="password" id="registerPasswordConfirm" v-model="registerPasswordConfirm" required />
+          </div>
+          <div class="form-group">
+            <button type="submit">Зарегистрироваться</button>
+          </div>
+        </form>
+
+        <!-- Переключатель между формами -->
+        <div class="switch-form">
+          <p v-if="isLogin">
+            Нет аккаунта?
+            <button @click="toggleForm">Зарегистрируйтесь</button>
+          </p>
+          <p v-else>
+            Уже есть аккаунт?
+            <button @click="toggleForm">Войдите</button>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -35,17 +67,33 @@ export default {
   },
   data() {
     return {
-      username: '',
-      password: '',
+      isLogin: true, // Состояние для переключения между формами
+      loginUsername: '',
+      loginPassword: '',
+      registerUsername: '',
+      registerPassword: '',
+      registerPasswordConfirm: '', // Поле для повторного ввода пароля
     };
   },
   methods: {
     closeModal() {
       this.$emit('close'); // Эмитим событие для закрытия модального окна
     },
-    handleSubmit() {
-      console.log('Авторизация', this.username, this.password);
+    handleLogin() {
+      console.log('Авторизация', this.loginUsername, this.loginPassword);
       this.closeModal();
+    },
+    handleRegister() {
+      // Проверка совпадения паролей
+      if (this.registerPassword !== this.registerPasswordConfirm) {
+        alert('Пароли не совпадают!');
+        return;
+      }
+      console.log('Регистрация', this.registerUsername, this.registerPassword);
+      this.closeModal();
+    },
+    toggleForm() {
+      this.isLogin = !this.isLogin; // Переключаем состояние между формами
     },
   },
 };
@@ -119,5 +167,22 @@ export default {
 
 .form-group button:hover {
   background-color: #45a049;
+}
+
+.switch-form {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.switch-form button {
+  background: none;
+  border: none;
+  color: #4caf50;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.switch-form button:hover {
+  text-decoration: underline;
 }
 </style>
