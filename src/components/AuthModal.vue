@@ -80,7 +80,12 @@ export default {
       this.$emit('close'); // Эмитим событие для закрытия модального окна
     },
     handleLogin() {
-      console.log('Авторизация', this.loginUsername, this.loginPassword);
+      // Здесь вы можете заменить код на ваш собственный API-запрос
+      console.log('Логин:', this.loginUsername, this.loginPassword);
+      // Пример API-вызова:
+      // axios.post('/api/login', { username: this.loginUsername, password: this.loginPassword })
+      //   .then(response => { /* обработка ответа */ })
+      //   .catch(error => { /* обработка ошибок */ });
       this.closeModal();
     },
     handleRegister() {
@@ -89,7 +94,12 @@ export default {
         alert('Пароли не совпадают!');
         return;
       }
-      console.log('Регистрация', this.registerUsername, this.registerPassword);
+      // Здесь вы можете заменить код на ваш собственный API-запрос
+      console.log('Регистрация:', this.registerUsername, this.registerPassword);
+      // Пример API-вызова:
+      // axios.post('/api/register', { username: this.registerUsername, password: this.registerPassword })
+      //   .then(response => { /* обработка ответа */ })
+      //   .catch(error => { /* обработка ошибок */ });
       this.closeModal();
     },
     toggleForm() {
