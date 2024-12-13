@@ -35,7 +35,7 @@ p {
   background-size: 100% 100%;
   background-repeat: no-repeat; /* Запрещаем повторение изображения */
   background-position: center; /* Центрируем фон */
-  width: 100vw; /* Баннер на всю ширину экрана */
+  width: 95vw; /* Баннер на всю ширину экрана */
   height: auto; /* Автоматическая высота */
   min-height: 70vh; /* Минимальная высота */
   margin: 0 auto; /* Центрируем, если есть родитель с отступами */
