@@ -8,36 +8,55 @@
       <div class="modal-body">
         <!-- Форма входа -->
         <form v-if="isLogin" @submit.prevent="handleLogin">
+          
           <div class="form-group">
-            <label for="loginUsername">Логин</label>
-            <input type="text" id="loginUsername" v-model="loginUsername" required />
+            <label for="loginPhone">Номер телефона</label>
+            <input type="text" id="loginPhone" v-model="loginPhone" required />
           </div>
+
           <div class="form-group">
             <label for="loginPassword">Пароль</label>
             <input type="password" id="loginPassword" v-model="loginPassword" required />
           </div>
+
           <div class="form-group">
-            <button type="submit">Войти</button>
+            <button type="submit" :disabled="isLoading">Войти</button>
           </div>
         </form>
+
 
         <!-- Форма регистрации -->
         <form v-else @submit.prevent="handleRegister">
           <div class="form-group">
-            <label for="registerUsername">Логин</label>
-            <input type="text" id="registerUsername" v-model="registerUsername" required />
+            <label for="username">Имя пользователя:</label>
+            <input type="text" v-model="registerData.registerUsername" id="username" placeholder="Введите имя пользователя" required />
           </div>
+
           <div class="form-group">
-            <label for="registerPassword">Пароль</label>
-            <input type="password" id="registerPassword" v-model="registerPassword" required />
+            <label for="phone">Телефон:</label>
+            <input type="text" v-model="registerData.registerPhone" id="phone" placeholder="Введите номер телефона" required />
           </div>
+
           <div class="form-group">
-            <label for="registerPasswordConfirm">Повторите пароль</label>
-            <input type="password" id="registerPasswordConfirm" v-model="registerPasswordConfirm" required />
+            <label for="password">Пароль:</label>
+            <input type="password" v-model="registerData.registerPassword" id="password" placeholder="Введите пароль" required />
           </div>
+
           <div class="form-group">
-            <button type="submit">Зарегистрироваться</button>
+            <label for="passwordConfirm">Подтвердите пароль:</label>
+            <input type="password" v-model="registerData.registerPasswordConfirm" id="passwordConfirm" placeholder="Подтвердите пароль" required />
           </div>
+
+          <!-- Отображение сообщения об ошибке -->
+          <div v-if="errorMessages" class="error">
+            <p>{{ errorMessages }}</p>
+          </div>
+
+          <div class="form-group">
+            <button type="submit" :disabled="isLoading">Зарегистрироваться</button>
+          </div>
+
+          <div v-if="isLoading">Загрузка...</div>
         </form>
 
         <!-- Переключатель между формами -->
@@ -57,6 +76,8 @@
 </template>
 
 <script>
+import { errorMessages } from 'vue/compiler-sfc';
+import axios from 'axios';
 export default {
   name: 'AuthModal',
   props: {
@@ -67,44 +88,118 @@ export default {
   },
   data() {
     return {
-      isLogin: true, // Состояние для переключения между формами
-      loginUsername: '',
-      loginPassword: '',
-      registerUsername: '',
-      registerPassword: '',
-      registerPasswordConfirm: '', // Поле для повторного ввода пароля
+      isVisible: true, // Показываем модальное окно
+      isLogin: true, // Начальное состояние - форма входа
+      loginData: {
+        loginPhone: '',
+        loginPassword: '',
+      },
+      registerData: {
+        registerUsername: '',
+        registerPhone: '',
+        registerPassword: '',
+        registerPasswordConfirm: ''
+      },
+      errorMessages: null,
+      isLoading: false
     };
   },
+
   methods: {
     closeModal() {
-      this.$emit('close'); // Эмитим событие для закрытия модального окна
+      this.$emit('close'); // Закрытие модального окна
     },
-    handleLogin() {
-      // Здесь вы можете заменить код на ваш собственный API-запрос
-      console.log('Логин:', this.loginUsername, this.loginPassword);
-      // Пример API-вызова:
-      // axios.post('/api/login', { username: this.loginUsername, password: this.loginPassword })
-      //   .then(response => { /* обработка ответа */ })
-      //   .catch(error => { /* обработка ошибок */ });
-      this.closeModal();
-    },
-    handleRegister() {
-      // Проверка совпадения паролей
-      if (this.registerPassword !== this.registerPasswordConfirm) {
-        alert('Пароли не совпадают!');
+
+    async handleRegister() {
+      this.isLoading = true;
+      this.errorMessages = '';
+
+      // Проверяем, совпадают ли пароли
+      if (this.registerData.registerPassword !== this.registerData.registerPasswordConfirm) {
+        this.errorMessages = 'Пароли не совпадают!';
+        this.isLoading = false;
         return;
       }
-      // Здесь вы можете заменить код на ваш собственный API-запрос
-      console.log('Регистрация:', this.registerUsername, this.registerPassword);
-      // Пример API-вызова:
-      // axios.post('/api/register', { username: this.registerUsername, password: this.registerPassword })
-      //   .then(response => { /* обработка ответа */ })
-      //   .catch(error => { /* обработка ошибок */ });
-      this.closeModal();
+
+      try {
+        // Подготовка данных для отправки на сервер
+        const registrationData = {
+          username: this.registerData.registerUsername,
+          phone: this.registerData.registerPhone,
+          password: this.registerData.registerPassword,
+        };
+
+        // Отправка POST-запроса на сервер по маршруту /register
+        const response = await axios.post('http://localhost:9105/SmakTown/API/register', registrationData);
+
+        // Успешный ответ от сервера
+        console.log(response.data.message); // Показать сообщение от сервера
+
+        if (response.status === 200){
+          this.isLogin = true;
+          this.isLoading = false;
+
+        } else{
+          this.errorMessages = 'Ошибка при регистрации. Попробуйте снова.';
+          this.isLoading = false;
+        }
+      } catch (error) {
+        // Обработка ошибок
+        if (error.response && error.response.data) {
+          // Если ошибка от сервера (например, ошибка валидации)
+          this.errorMessages = error.response.data.error;
+        } else {
+          // Если ошибка сети или другие ошибки
+          this.errorMessages = 'Произошла ошибка при регистрации';
+        }
+      }
+       
     },
     toggleForm() {
       this.isLogin = !this.isLogin; // Переключаем состояние между формами
     },
+    async handleLogin() {
+      this.isLoading = true;
+      this.errorMessages = '';
+
+      // Подготовка данных для отправки на сервер
+      const loginData = {
+        phone: this.loginPhone,  // Используем данные из v-model
+        password: this.loginPassword,
+      };
+
+      try {
+        // Отправка POST-запроса на сервер
+        const response = await axios.post('http://localhost:9105/SmakTown/API/signIn', loginData);
+
+        // Успешный ответ от сервера
+        
+        console.log('короче все норм')
+        if (response.status === 200){
+          this.isLogin = true;
+          this.isLoading = false;
+
+        } else{
+          this.errorMessages = 'Ошибка при регистрации. Попробуйте снова.';
+          this.isLoading = false;
+        }
+
+        
+      } catch (error) {
+        // Обработка ошибок
+        if (error.response && error.response.data) {
+          this.errorMessages = error.response.data.error;
+        } else {
+          this.errorMessages = 'Произошла ошибка при авторизации';
+        }
+      } finally {
+        // Остановка индикатора загрузки
+        this.isLoading = false;
+        this.closeModal();  // Закрыть модальное окно после регистрации
+      }
+    }
+
+
   },
 };
 </script>
