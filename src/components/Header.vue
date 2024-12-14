@@ -14,8 +14,16 @@
       <!-- Навигация -->
       <div class="navigation">
       <button class="main-module"> Главная</button>
-      <button class="basket-module"> Корзина</button>
+      <button class="basket-module" @click="openBasketModal">Корзина</button>
       <button class="cooperation-module"> Сотрудничество</button>
+
+       <!-- Модальное окно корзины -->
+        <BasketModal 
+          :isVisible="isBasketVisible" 
+          :basketItems="basketItems"
+          @update:isVisible="isBasketVisible = $event"
+          @update:basketItems="basketItems = $event"
+        />
       </div>
       <!-- Локация и профиль -->
       <div class="user-actions">
@@ -44,10 +52,24 @@
 </template>
 
 <script>
+import BasketModal from './BasketModal.vue';
+
 export default{
- methods: {
+  data() {
+    return {
+      isBasketVisible: false,
+      basketItems: []  // Тут будут храниться товары корзины
+    };
+  },
+  components: {
+    BasketModal
+  },
+  methods: {
     openAuthModal() {
       this.$emit('open-modal'); // Эмитим событие для открытия модального окна
+    },
+    openBasketModal() {
+      this.isBasketVisible = true;  // Открыть модальное окно
     },
   },
 };

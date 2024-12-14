@@ -8,9 +8,12 @@
     <SaleCard />
     <AdvertisementBanner />
     <ProductCard />
+    <BasketModal />
+
 
     <!-- Модальное окно -->
-    <AuthModal :isVisible="isModalVisible" @close="toggleModal" />
+    <AuthModal :isVisible="isModalVisible" @update:isVisible="isModalVisible = $event" />
+
   </div>
 </template>
 
@@ -21,6 +24,7 @@ import SaleCard from "./components/SaleCard.vue";
 import ProductCard from "./components/ProductCard.vue";
 import AdvertisementBanner from "./components/AdvertisementBanner.vue";
 import AuthModal from "./components/AuthModal.vue";
+import BasketModal from "./components/BasketModal.vue";
 
 export default {
   name: "App",
@@ -31,6 +35,7 @@ export default {
     ProductCard,
     AdvertisementBanner,
     AuthModal,
+    BasketModal,
   },
   data() {
     return {

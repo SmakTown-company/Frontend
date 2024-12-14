@@ -24,7 +24,6 @@
           </div>
         </form>
 
-
         <!-- Форма регистрации -->
         <form v-else @submit.prevent="handleRegister">
           <div class="form-group">
@@ -76,8 +75,8 @@
 </template>
 
 <script>
-import { errorMessages } from 'vue/compiler-sfc';
 import axios from 'axios';
+
 export default {
   name: 'AuthModal',
   props: {
@@ -88,12 +87,9 @@ export default {
   },
   data() {
     return {
-      isVisible: true, // Показываем модальное окно
       isLogin: true, // Начальное состояние - форма входа
-      loginData: {
-        loginPhone: '',
-        loginPassword: '',
-      },
+      loginPhone: '',
+      loginPassword: '',
       registerData: {
         registerUsername: '',
         registerPhone: '',
@@ -101,13 +97,13 @@ export default {
         registerPasswordConfirm: ''
       },
       errorMessages: null,
-      isLoading: false
+      isLoading: false,
     };
   },
 
   methods: {
     closeModal() {
-      this.$emit('close'); // Закрытие модального окна
+      this.$emit('update:isVisible', false); // Закрываем окно, передавая обновление родителю
     },
 
     async handleRegister() {
@@ -129,42 +125,39 @@ export default {
           password: this.registerData.registerPassword,
         };
 
-        // Отправка POST-запроса на сервер по маршруту /register
+        // Отправка POST-запроса на сервер
         const response = await axios.post('http://localhost:9105/SmakTown/API/register', registrationData);
 
         // Успешный ответ от сервера
-        console.log(response.data.message); // Показать сообщение от сервера
-
-        if (response.status === 200){
+        if (response.status === 200) {
           this.isLogin = true;
           this.isLoading = false;
-
-        } else{
+          
+        } else {
           this.errorMessages = 'Ошибка при регистрации. Попробуйте снова.';
           this.isLoading = false;
         }
       } catch (error) {
         // Обработка ошибок
         if (error.response && error.response.data) {
-          // Если ошибка от сервера (например, ошибка валидации)
           this.errorMessages = error.response.data.error;
         } else {
-          // Если ошибка сети или другие ошибки
           this.errorMessages = 'Произошла ошибка при регистрации';
         }
       }
-       
     },
+
     toggleForm() {
       this.isLogin = !this.isLogin; // Переключаем состояние между формами
     },
+
     async handleLogin() {
       this.isLoading = true;
       this.errorMessages = '';
 
       // Подготовка данных для отправки на сервер
       const loginData = {
-        phone: this.loginPhone,  // Используем данные из v-model
+        phone: this.loginPhone,
         password: this.loginPassword,
       };
 
@@ -173,18 +166,13 @@ export default {
         const response = await axios.post('http://localhost:9105/SmakTown/API/signIn', loginData);
 
         // Успешный ответ от сервера
-        
-        console.log('короче все норм')
-        if (response.status === 200){
+        if (response.status === 200) {
           this.isLogin = true;
-          this.isLoading = false;
-
-        } else{
-          this.errorMessages = 'Ошибка при регистрации. Попробуйте снова.';
+          this.closeModal(); // Закрываем модальное окно после успешного входа
+        } else {
+          this.errorMessages = 'Ошибка при авторизации. Попробуйте снова.';
           this.isLoading = false;
         }
-
-        
       } catch (error) {
         // Обработка ошибок
         if (error.response && error.response.data) {
@@ -195,14 +183,12 @@ export default {
       } finally {
         // Остановка индикатора загрузки
         this.isLoading = false;
-        this.closeModal();  // Закрыть модальное окно после регистрации
       }
     }
-
-
   },
 };
 </script>
+
 
 <style scoped>
 .modal-overlay {
