@@ -3,7 +3,8 @@
     <div class="card-sale-list">
       <div class="card" v-for="(product, index) in products" :key="index">
         <div class="img-for-card">
-          
+          <!-- Отображаем изображение из Base64 -->
+          <img v-if="product.img" :src="product.img" alt="Product Image" class="product-image"/>
         </div>
         <div class="name-product">
           <h3>{{ product.nameproduct }}</h3>
@@ -41,20 +42,20 @@ export default {
   methods: {
     // Метод для выполнения HTTP-запроса и получения всех карт
     fetchCards() {
-    fetch('http://localhost:8080/SmakTown/API/getAllCards')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Ошибка при загрузке карт');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data); // Логирование данных, полученных с сервера
-        this.products = data;
-      })
-      .catch((error) => {
-        console.error('Ошибка:', error);
-      });
+      fetch('http://localhost:8080/SmakTown/API/getAllCards')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Ошибка при загрузке карт');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data); // Логирование данных, полученных с сервера
+          this.products = data;
+        })
+        .catch((error) => {
+          console.error('Ошибка:', error);
+        });
     },
     // Метод для добавления товара в корзину
     addToBasket(product) {
@@ -81,25 +82,12 @@ export default {
           console.error('Ошибка при добавлении товара в корзину:', error);
         });
     }
-
   },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  user-select: none;
-}
-
-body {
-  font-family: 'Montserrat', sans-serif;
-}
-
+/* CSS стили */
 .sale-card {
   max-width: 1200px;
   margin: 0 auto;

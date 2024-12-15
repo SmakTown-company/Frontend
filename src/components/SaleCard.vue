@@ -1,36 +1,24 @@
 <template>
   <div class="sale-card">
-    <!-- Поисковик -->
-    <div class="search-container">
-      <input 
-        type="text" 
-        v-model="searchQuery" 
-        placeholder="Поиск по сайту" 
-        class="search-input" 
-      />
-      <button @click="performSearch" class="search-button">
-        <span class="search-icon"></span> найти
-      </button>
-    </div>
     <div class="card-sale-list">
-      <div class="card" v-for="(product, index) in products" :key="index" :class="{'image-card': index === 2}">
-        <!-- Для третьей карточки добавляем класс "image-card" -->
-        <div v-if="index === 2" class="img-for-card image-button">
+      <div class="card" v-for="(product, index) in interleavedProducts" :key="index">
+        <!-- Статическая карта (для третьей карты) -->
+        <div v-if="product.isStatic" class="img-for-card image-button">
           <img :src="`/src/assets/card-image.png`" alt="image-button" class="product-image" />
         </div>
-        <!-- Для всех остальных карточек -->
+        <!-- Карты из базы данных -->
         <div v-else>
           <div class="img-for-card">
-            <img :src="`/src/assets/${product.image}`" alt="product.name" class="product-image" />
+            <img v-if="product.img" :src="product.img" alt="Product Image" class="product-image"/>
           </div>
           <div class="name-product">
-            <h3>{{ product.name }}</h3>
+            <h3>{{ product.nameproduct }}</h3>
           </div>
           <div class="price">
             <h3>{{ product.price }}</h3>
           </div>
           <div class="actions">
-            <button class="basket-button">
+            <button class="basket-button" @click="addToBasket(product)">
               В КОРЗИНУ
             </button>
             <button class="favorite-button">
@@ -38,7 +26,7 @@
             </button>
           </div>
           <div class="shop">
-            {{ product.shop }}
+            {{ product.shop_id }}
           </div>
         </div>
       </div>
@@ -46,64 +34,83 @@
   </div>
 </template>
 
+
 <script>
 export default {
   data() {
     return {
-      searchQuery: "", // Переменная для хранения поискового запроса
-      products: [
-        { 
-          name: "Куриное филе", 
-          price: "350₽", 
-          shop: "ООО 'ПУД', Симферополь ул. Жукова, д. 12",
-          image: "image.png" 
-        },
-        { 
-          name: "CocaCola 0.475", 
-          price: "100₽", 
-          shop: "ООО 'Корзина', Симферополь, ул. Гайдара, д. 132",
-          image: "image.png" 
-        },
-        {
-
-        },
-        { 
-          name: "Мясная закуска 250г 'Бавария'", 
-          price: "220₽", 
-          shop: "ООО 'Еда-Вода', Симферополь, ул. Скуфская, д. 42В",
-          image: "image.png" 
-        },
-        // добавьте другие продукты, если нужно
-      ]
+      products: [], // Массив для хранения карт из базы данных
     };
   },
-  methods: {
-    performSearch() {
-      if (this.searchQuery.trim()) {
-        console.log("Поисковый запрос:", this.searchQuery);
-        // Логика обработки поиска
-      } else {
-        console.log("Введите запрос для поиска.");
+  mounted() {
+    this.fetchCards(); // Загружаем карты при монтировании компонента
+  },
+  computed: {
+    // Вычисляемое свойство для формирования последовательности карт
+    interleavedProducts() {
+      let result = [];
+      
+      // Добавляем карты из базы данных
+      for (let i = 0; i < this.products.length; i++) {
+        if (i % 3 === 2) {
+          // Каждая третья карта будет статичной
+          result.push({ isStatic: true });
+        } else {
+          result.push(this.products[i]);
+        }
       }
+      
+      return result;
+    }
+  },
+  methods: {
+    // Метод для выполнения HTTP-запроса и получения всех карт
+    fetchCards() {
+      fetch('http://localhost:8080/SmakTown/API/getCardDiscount')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Ошибка при загрузке карт');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data); // Логирование данных, полученных с сервера
+          this.products = data; // Обновляем массив продуктов
+        })
+        .catch((error) => {
+          console.error('Ошибка:', error);
+        });
     },
+    // Метод для добавления товара в корзину
+    addToBasket(product) {
+      fetch('http://localhost:8080/SmakTown/API/addInBasket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: product.id, // передаем id товара
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            console.log('Товар добавлен в корзину:', product);
+          } else {
+            console.error('Ошибка при добавлении товара в корзину');
+          }
+        })
+        .catch((error) => {
+          console.error('Ошибка при добавлении товара в корзину:', error);
+        });
+    }
   },
 };
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  user-select: none;
-}
-
-body {
-  font-family: 'Montserrat', sans-serif;
-}
-
+<style scoped>
+/* CSS стили */
 .sale-card {
   max-width: 1200px;
   margin: 0 auto;
@@ -115,6 +122,7 @@ body {
   width: 100vw;
   min-height: 55vh;
   border-radius: 25px;
+  margin-top: 50px;
 }
 
 .card-sale-list {
@@ -140,30 +148,6 @@ body {
 
 .card:hover {
   transform: scale(1.05);
-}
-
-/* Стиль для третьей карточки */
-.card.image-card {
-  min-height: 400px;
-  padding: 0; /* Убираем отступы */
-  background-color: transparent; /* Убираем фон */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card.image-card .img-for-card {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 15px;
-}
-
-.card.image-card .product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Картинка полностью заполняет карточку */
-  border-radius: 15px;
 }
 
 .img-for-card {
@@ -249,48 +233,4 @@ body {
   margin-top: 10px;
   line-height: 1.4; /* Увеличение межстрочного интервала для лучшей читаемости */
 }
-
-.search-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  width: 1040px;
-  padding: 12px;
-  border-radius: 15px;
-  font-size: 16px;
-  border: none;
-  outline: none;
-}
-
-.search-button {
-  padding: 12px 20px;
-  margin-left: 10px;
-  background-color: #f2bd6a; /* Цвет кнопки */
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff; /* Белый цвет текста */
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px; /* Расстояние между иконкой и текстом */
-  outline: none; /* Удалить обводку при клике */
-}
-.search-button:hover {
-  background-color: #f39c12; /* Цвет кнопки при наведении */
-}
-/* Добавляем SVG-иконку для кнопки */
-.search-icon {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  background: url('@/assets/lupa.svg') no-repeat center;
-  background-size: contain;
-}
-
 </style>
