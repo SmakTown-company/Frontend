@@ -6,13 +6,13 @@
           
         </div>
         <div class="name-product">
-          <h3>{{ product.nameProduct }}</h3>
+          <h3>{{ product.nameproduct }}</h3>
         </div>
         <div class="price">
           <h3>{{ product.price }}</h3>
         </div>
         <div class="actions">
-          <button class="basket-button">
+          <button class="basket-button" @click="addToBasket(product)">
             В КОРЗИНУ
           </button>
           <button class="favorite-button">
@@ -20,7 +20,7 @@
           </button>
         </div>
         <div class="shop">
-          {{ product.shopID }}
+          {{ product.shop_id }}
         </div>
       </div>
     </div>
@@ -41,20 +41,47 @@ export default {
   methods: {
     // Метод для выполнения HTTP-запроса и получения всех карт
     fetchCards() {
-      fetch('http://localhost:8080/SmakTown/API/getAllCards')
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Ошибка при загрузке карт');
-          }
-          return response.json(); // Получаем данные в формате JSON
-        })
+    fetch('http://localhost:8080/SmakTown/API/getAllCards')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Ошибка при загрузке карт');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data); // Логирование данных, полученных с сервера
+        this.products = data;
+      })
+      .catch((error) => {
+        console.error('Ошибка:', error);
+      });
+    },
+    // Метод для добавления товара в корзину
+    addToBasket(product) {
+      fetch('http://localhost:8080/SmakTown/API/addInBasket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: product.id, // передаем id товара
+        }),
+      })
+        .then((response) => response.json())
         .then((data) => {
-          this.products = data; // Заполняем массив products данными
+          if (data.success) {
+            // После успешного добавления товара, обновляем локальную корзину
+            this.basketItems.push(product);
+            console.log('Товар добавлен в корзину:', product);
+          } else {
+            console.error('Ошибка при добавлении товара в корзину');
+          }
         })
         .catch((error) => {
-          console.error('Ошибка:', error);
+          console.error('Ошибка при добавлении товара в корзину:', error);
         });
-    },
+    }
+
   },
 };
 </script>

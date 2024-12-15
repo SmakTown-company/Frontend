@@ -3,6 +3,9 @@
       <div class="modal-basket">
         <div class="modal-header">
           <h2>Корзина</h2>
+          <!-- Модальное окно корзины -->
+          <BasketModal :isVisible="isBasketVisible" :basketItems="basketItems" @update:isVisible="isBasketVisible = $event" />
+
           <button class="close-btn" @click="closeModal">&times;</button>
         </div>
         <div class="modal-body">
